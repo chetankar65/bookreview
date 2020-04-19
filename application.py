@@ -6,6 +6,7 @@ import hashlib
 import jsonify
 
 from flask import Flask, render_template, request, redirect, session
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 import psycopg2
