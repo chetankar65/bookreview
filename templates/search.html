@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <title>Project1 | Book review website</title>
+    <style>
+        body{
+            margin-top: 3%;
+            margin-left: 5%;
+        }
+
+        .results{
+            background-color: white;
+            color:black;
+            width: 83%;
+        }
+        input[type=text],button{
+            padding: 5px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <form class="searchBar" action="/searchquery" method='POST'>
+        <input type="text" placeholder="Book, author or ISBN" name="data" style="width: 70%;">
+        <button type="submit" class="btn btn-success" style="width: 10%;"><i class="fa fa-search"></i></button>
+        <a class="btn btn-danger" href="/logout">Logout</a>
+    </form>
+    <br>
+    <div class="row" align="center">
+        <div class="col-lg-3 col-sm-3"><h3>ISBN</h3></div>
+        <div class="col-lg-3 col-sm-3"><h3>NAME</h3></div>
+        <div class="col-lg-3 col-sm-3"><h3>AUTHOR</h3></div>
+        <div class="col-lg-3 col-sm-3"><h3>YEAR</h3></div>
+    </div>
+    <hr>
+    <div class="container results" align='center'>
+    {% if rows|length > 0 %}
+        {% for book in rows %}
+            <div class="row">
+                <div class="col-lg-3 col-sm-3">{{book.isbn}}</div>
+                <div class="col-lg-3 col-sm-3">{{book.name}}</div>
+                <div class="col-lg-3 col-sm-3">{{book.author}}</div>
+                <div class="col-lg-3 col-sm-3">{{book.year}}</div>
+                <div class="col-lg-3 col-sm-3"><a href="/details/{{book.isbn}}">Submit a review</a></div>
+            </div>
+            <hr>
+        {% endfor %}
+    {% else %}
+            <h3>No results found</h3>
+    {% endif %}
+    </div>
+</body>
+</html>
