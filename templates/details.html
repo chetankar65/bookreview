@@ -25,7 +25,7 @@
     </div>
     <hr>
     <div><h5>No of ratings on goodreads: {{res.books[0].ratings_count}}</h5></div>
-    <hr><br><br>
+    <hr><br>
     <div id="review">
         {% if html == True %}
             <form method="POST" action='/submitreview'>
@@ -36,7 +36,7 @@
         {% else %}
             <h2>You have already submitted a review.</h2>
         {% endif %}
-    </div><br><br><hr>
+    </div><br><hr>
     <h3>All reviews:</h3><hr>
     {% for review in reviews %}
         Rated: {{review.rating}} stars <br>

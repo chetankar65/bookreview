@@ -10,7 +10,7 @@ from flask import Flask, render_template, request, redirect, session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 import psycopg2
-#postgresql+psycopg2://tnomtgthouaruf:c699b4fe6ac3ad99f9989f50835d6faa4466811fc8a46ff421f1fb55d635d66f@ec2-34-197-212-240.compute-1.amazonaws.com:5432/d9k5abigv08a3r
+#DATABASE_URL(incase):postgresql+psycopg2://tnomtgthouaruf:c699b4fe6ac3ad99f9989f50835d6faa4466811fc8a46ff421f1fb55d635d66f@ec2-34-197-212-240.compute-1.amazonaws.com:5432/d9k5abigv08a3r
 
 app = Flask(__name__)
 app.secret_key = 'any random string'
@@ -37,13 +37,13 @@ def index():
 
 @app.route('/register',methods=['POST'])
 def register():
-    email = request.form.get("email")
+    username = request.form.get("username")
     password = request.form.get("password")
     newpass = password + "abmcnk2o210u9win" #salting
     password_hash = hashlib.md5(newpass.encode())
-    if(re.search(regex,email)):
-        if db.execute("SELECT * FROM users WHERE username = :email",{"email":email}).rowcount == 0:
-            db.execute("INSERT INTO users (username, password) VALUES (:username, :password)",{"username": email, "password": password_hash.hexdigest()})
+    if(re.search(regex,username)):
+        if db.execute("SELECT * FROM users WHERE username = :username",{"username":username}).rowcount == 0:
+            db.execute("INSERT INTO users (username, password) VALUES (:username, :password)",{"username": username, "password": password_hash.hexdigest()})
             db.commit()
             return redirect("/login")
         else:
@@ -51,7 +51,7 @@ def register():
             div = 'alert alert-warning'
             return render_template("index.html",message=message, div = div)
     else:
-        message = 'Email is not valid'
+        message = 'Username is not valid'
         div = 'alert alert-danger'
         return render_template("index.html",message=message, div = div)
 
@@ -65,17 +65,17 @@ def login():
 
 @app.route("/loggedIn",methods=['POST'])
 def loggedIn():
-    email = request.form.get("email")
+    username = request.form.get("username")
     password = request.form.get("password")
     newpass = password + "abmcnk2o210u9win" #salting
     password_hash = hashlib.md5(newpass.encode())
-    if db.execute("SELECT * FROM users WHERE username = :email",{"email":email}).rowcount == 0:
+    if db.execute("SELECT * FROM users WHERE username = :username",{"username":username}).rowcount == 0:
         message = "Account doesn't exist"
         div = 'alert alert-warning'
         return render_template("login.html",message = message, div = div)
     else:
-        rows = db.execute("SELECT id,username,password FROM users WHERE username = :email",{"email":email}).fetchone()
-        if (password_hash.hexdigest() == rows.password and email == rows.username):
+        rows = db.execute("SELECT id,username,password FROM users WHERE username = :username",{"username":username}).fetchone()
+        if (password_hash.hexdigest() == rows.password and username == rows.username):
             session["user_id"] = rows.id
             return redirect("/search")
         else:
